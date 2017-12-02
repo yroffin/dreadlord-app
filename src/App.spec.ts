@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
- import * as supertest from 'supertest'
+import * as supertest from 'supertest'
+
 import App from './App'
-/*
+import ExpressWrapper from './express/express-wrapper'
+
 var app = new App();
 
 describe('App', () => {
   it('works', () =>
-    supertest(app)
+    supertest(app.getApp())
       .get('/')
-      .expect('Content-Type', /json/)
       .expect(200)
+      .expect('Content-Type', /json/)
   )
 })
-*/

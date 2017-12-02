@@ -34,12 +34,13 @@ export class HelloWorld {
   }
 
   public init () {
-    console.info('_service', this._service);
-    this._express.app.get('/', (req, res) => {
+    /**
+     * get
+     */
+    this._express.getApp().get('/', (req, res) => {
         res.json(this._service.hit());
       }
     );
-    console.info('init', this._express.app);
   }
 
 }

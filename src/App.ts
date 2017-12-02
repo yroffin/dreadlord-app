@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- import { Singleton, AutoWired, Inject } from "typescript-ioc";
+import { Singleton, AutoWired, Inject } from "typescript-ioc";
 import * as express from 'express';
 
 import ExpressWrapper from './express/express-wrapper';
@@ -31,10 +31,14 @@ export default class App {
 
   constructor (
   ) {
+    this.helloWorld.init();
   }
 
   listen(port: number): void {
-    this.helloWorld.init();
     this.expressWrapper.ignite(port);
+  }
+
+  getApp() {
+    return this.expressWrapper.getApp();
   }
 }

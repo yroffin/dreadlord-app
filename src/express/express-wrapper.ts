@@ -21,7 +21,7 @@ import * as express from 'express';
 @Singleton 
 export class ExpressWrapper {
 
-  public app: express;
+  private app: express;
   
   constructor () {
     console.log(`construct express`);
