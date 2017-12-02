@@ -30,6 +30,9 @@
     "tsc": "1.20150623.0",
     "typescript": "2.3.3",
     "typescript-eslint-parser": "3.0.0",
-    "tsc-watch": "^1.0.8"
+    "inversify": "4.5.2",
+    "reflect-metadata": "0.1.10",
+    "inversify-binding-decorators": "3.0.0",
+    "tsc-watch": "1.0.8"
   }
 }
