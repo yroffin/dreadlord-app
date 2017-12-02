@@ -1,31 +1,40 @@
+/* 
+ * Copyright 2017 Yannick Roffin.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ import { Singleton, AutoWired, Inject } from "typescript-ioc";
 import * as express from 'express';
+
+import ExpressWrapper from './express/express-wrapper';
 import HelloWorld from './hello/hello-world';
-
-import { myContainer } from "./inversify.config";
-
-import { ManageJson } from "./services/types";
 import { HelloService } from "./services/hello-service";
 
+@Singleton 
 export default class App {
-  public express: any;
 
-  constructor () {
-    myContainer.isBound("HelloService");
-    let service: ManageJson = myContainer.get<ManageJson>("HelloService");
-    console.info(service.hit());
+  @Inject
+  private helloWorld: HelloWorld;
+  @Inject
+  private expressWrapper: ExpressWrapper;
 
-    this.express = express();
-    let cl = new HelloWorld(this.express);
-    cl.check();
+  constructor (
+  ) {
   }
 
   listen(port: number): void {
-    this.express.listen(port, (err) => {
-      if (err) {
-        return console.log(err)
-      }
-    
-      return console.log(`server is listening on ${port} ...`)
-    });
+    this.helloWorld.init();
+    this.expressWrapper.ignite(port);
   }
 }

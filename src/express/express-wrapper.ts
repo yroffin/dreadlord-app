@@ -16,18 +16,37 @@
 
  import { Singleton, AutoWired, Inject } from "typescript-ioc";
 
+import * as express from 'express';
+
 @Singleton 
-export class HelloService {
+export class ExpressWrapper {
 
-    private value: any = {
-        message: 'Hello World!!!',
-        res: "rrr"
-    };
+  public app: express;
+  
+  constructor () {
+    console.log(`construct express`);
+    this.app = express();
+  }
 
-    public hit() {
-        this.value.message = this.value.message + '!';
-        return this.value;
-    }
+  public router(): express.Router {
+    return express.Router();
+  }
+
+  public ignite(port: number): void {
+    console.log(`server will listening on ${port} ...`);
+
+    this.app.listen(port, (err) => {
+      if (err) {
+        return console.log(err)
+      }
+    
+      return console.log(`server is now listening on ${port} ...`);
+    });
+  }
+
+  public getApp(): any {
+    return this.app;
+  }
 }
 
-export default HelloService;
+export default ExpressWrapper;
