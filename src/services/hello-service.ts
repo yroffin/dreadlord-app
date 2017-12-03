@@ -16,13 +16,13 @@
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
 
-import ModelUSer from '../model/model-user';
+import { UserDao } from '../model/db/dao-user';
 
-@Singleton 
+@Singleton
 export class HelloService {
 
     @Inject
-    private _user: ModelUSer;
+    private _user: UserDao;
 
     private value: any = {
         message: 'Hello World!!!',
@@ -33,8 +33,12 @@ export class HelloService {
         this.value.message = this.value.message + '!';
         this.value.user = this._user;
 
-        this._user.create();
-        
+        this._user.create({
+            name: 'Chris',
+            username: 'sevilayha' + new Date(),
+            password: 'password'
+        });
+
         return this.value;
     }
 }

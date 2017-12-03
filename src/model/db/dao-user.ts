@@ -22,7 +22,7 @@ import * as mongoose from 'mongoose';
 import Mongodb from './mongodb';
 
 @Singleton
-export class UserModel {
+export class UserDao {
 
   @Inject
   private _mongoose: Mongodb;
@@ -51,19 +51,18 @@ export class UserModel {
     this.entity = mongoose.model('User', this.schema);
   }
 
-  create() {
+  create(user: UserBean) {
     // create a new user called chris
-    var chris = new this.entity({
-      name: 'Chris',
-      username: 'sevilayha' + new Date(),
-      password: 'password'
-    });
+    var tuple = new this.entity(user);
     // call the built-in save method to save to the database
-    chris.save((err) => {
-      if (err) throw err;
+    tuple.save((err) => {
+      if (err) {
+        console.log('User was not saved successfully!', err);
+        return;
+      }
       console.log('User saved successfully!');
     });
   }
 }
 
-export default UserModel;
+export default UserDao;
