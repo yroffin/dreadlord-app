@@ -17,6 +17,11 @@
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromPromise';
+
 import { ChevalierDao } from '../model/db/dao-chevalier';
 
 @Singleton
@@ -34,8 +39,12 @@ export class ChevalierService {
 
         return chevalier;
     }
-    public get(name: string) {
-        let chevalier = this._chevalier.get(name);
+    public findAll(): Observable<Array<ChevalierBean>> {
+        let chevalier: Observable<Array<ChevalierBean>> = this._chevalier.findAll();
+        return chevalier;
+    }
+    public findOne(name: string): Observable<ChevalierBean> {
+        let chevalier: Observable<ChevalierBean> = this._chevalier.findOne(name);
         return chevalier;
     }
 }

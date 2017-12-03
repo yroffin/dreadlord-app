@@ -29,7 +29,6 @@ export class Mongodb {
     mongoose.connect('mongodb://localhost:27017/db', { useMongoClient: true })
     .then(function(){
       console.log(" Connected to dbName ");
-    
     }).catch(err => console.error(err));
   }
 

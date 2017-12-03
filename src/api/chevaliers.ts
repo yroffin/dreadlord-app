@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
- import { Singleton, AutoWired, Inject } from "typescript-ioc";
+import { Singleton, AutoWired, Inject } from "typescript-ioc";
+
+import { Observable } from 'rxjs/Observable';
 
 import * as express from 'express';
 
@@ -38,15 +40,26 @@ export class ChevaliersApi {
      * post
      */
     this._express.getApp().post('/api/chevaliers', (req, res) => {
-        res.json(this._service.create("pierre"));
+        res.json(this._service.create(req.body.name));
       }
     );
     /**
      * get
-     *
      */
     this._express.getApp().get('/api/chevaliers', (req, res) => {
-      res.json(this._service.get("pierre"));
+      let chevalier: Observable<Array<ChevalierBean>> = this._service.findAll();
+      chevalier.subscribe((result) => {
+        res.json(result);
+      });
+    });
+    /**
+     * get
+     */
+    this._express.getApp().get('/api/chevaliers/:id', (req, res) => {
+      let chevalier: Observable<ChevalierBean> = this._service.findOne(req.params.id);
+      chevalier.subscribe((result) => {
+        res.json(result);
+      });
     }
   );
 }

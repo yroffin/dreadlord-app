@@ -34,6 +34,10 @@
     "mongoose": "4.13.6",
     "mongodb": "2.2.33",
     "bluebird": "3.5.1",
+    "body-parser": "1.18.2",
+    "rxjs": "5.5.3",
+    "lodash": "4.17.4",
+    "@types/lodash": "4.14.87",
     "tsc-watch": "1.0.8"
   }
 }

@@ -15,6 +15,12 @@
  */
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
+import * as _ from 'lodash'; 
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromPromise';
 
 // grab the things we need
 import * as mongoose from 'mongoose';
@@ -56,9 +62,28 @@ export class ChevalierDao {
     });
   }
 
-  get(name: string): ChevalierBean {
-    var result = this.entity.findOne({ 'name': name });
-    return result;
+  findAll(): Observable<Array<ChevalierBean>> {
+    let beans: Subject<Array<ChevalierBean>> = new Subject<Array<ChevalierBean>>();
+    Observable.fromPromise(this.entity.find().exec()).subscribe((result: Array<any>) => {
+      let tx = new Array<ChevalierBean>();
+      _.each(result, (element) => {
+        tx.push({
+          "name": element.name
+        });
+      });
+      beans.next(tx);
+    });
+    return beans;
+  }
+
+  findOne(name: string): Subject<ChevalierBean> {
+    let bean: Subject<ChevalierBean> = new Subject<ChevalierBean>();
+    Observable.fromPromise(this.entity.findOne({ 'name': name }).exec()).subscribe((result: any) => {
+      bean.next({
+        "name": result.name
+      });
+    });
+    return bean;
   }
 }
 

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
- import { Singleton, AutoWired, Inject } from "typescript-ioc";
+import { Singleton, AutoWired, Inject } from "typescript-ioc";
 
 import * as express from 'express';
+const bodyParser = require('body-parser');
 
 @Singleton 
 export class ExpressWrapper {
@@ -26,6 +27,7 @@ export class ExpressWrapper {
   constructor () {
     console.log(`construct express`);
     this.app = express();
+    this.app.use(bodyParser.json());
   }
 
   public router(): express.Router {
@@ -34,7 +36,6 @@ export class ExpressWrapper {
 
   public ignite(port: number): void {
     console.log(`server will listening on ${port} ...`);
-
     this.app.listen(port, (err) => {
       if (err) {
         return console.log(err)
