@@ -17,3 +17,10 @@ setup :
 - and then postman (for example)
 - and robomongo for db view
 
+see :
+- https://blog.risingstack.com/building-a-node-js-app-with-typescript-tutorial/
+- http://mongoosejs.com/
+- https://www.npmjs.com/package/typescript-ioc
+- https://typescript.developpez.com/actu/101684/Ecrire-une-application-NodeJS-avec-TypeScript-par-Yahiko/
+
+And one day Angular2
