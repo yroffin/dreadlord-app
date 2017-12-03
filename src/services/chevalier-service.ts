@@ -1,3 +1,4 @@
+
 /* 
  * Copyright 2017 Yannick Roffin.
  *
@@ -15,34 +16,28 @@
  */
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
-import * as express from 'express';
 
-import ExpressWrapper from './express/express-wrapper';
-import HelloWorld from './hello/hello-world';
-import { HelloService } from "./services/hello-service";
-import { ChevaliersApi } from "./api/chevaliers";
+import { ChevalierDao } from '../model/db/dao-chevalier';
 
-@Singleton 
-export default class App {
+@Singleton
+export class ChevalierService {
 
-  @Inject
-  private helloWorld: HelloWorld;
-  @Inject
-  private chevaliersApi: ChevaliersApi;
-  @Inject
-  private expressWrapper: ExpressWrapper;
+    @Inject
+    private _chevalier: ChevalierDao;
 
-  constructor (
-  ) {
-    this.helloWorld.init();
-    this.chevaliersApi.init();
-  }
+    public create(name: string) {
+        let chevalier: ChevalierBean = {
+            name: name
+        };
 
-  listen(port: number): void {
-    this.expressWrapper.ignite(port);
-  }
+        this._chevalier.create(chevalier);
 
-  getApp() {
-    return this.expressWrapper.getApp();
-  }
+        return chevalier;
+    }
+    public get(name: string) {
+        let chevalier = this._chevalier.get(name);
+        return chevalier;
+    }
 }
+
+export default ChevalierService;
