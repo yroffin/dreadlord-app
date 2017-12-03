@@ -9,6 +9,7 @@ stack is :
 
 # setup
 setup :
+- git
 - npm
 - nodejs
 - visual studio code (for example)
