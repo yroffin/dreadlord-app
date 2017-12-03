@@ -3,7 +3,7 @@
     "target": "es6",
     "lib": ["es6"],
     "module": "commonjs",
-    "types": ["reflect-metadata"],
+    "types": [],
     "moduleResolution": "node",
     "outDir": "dist",
     "sourceMap": true,
