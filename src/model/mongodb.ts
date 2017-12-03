@@ -16,27 +16,25 @@
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
 
-import ModelUSer from '../model/model-user';
+// grab the things we need
+import * as mongodb from 'mongodb';
+import * as mongoose from 'mongoose';
+import * as bluebird from 'bluebird';
 
-@Singleton 
-export class HelloService {
+@Singleton
+export class Mongodb {
 
-    @Inject
-    private _user: ModelUSer;
+  constructor() {
+    mongoose.Promise = bluebird;
+    mongoose.connect('mongodb://localhost:27017/db', { useMongoClient: true })
+    .then(function(){
+      console.log(" Connected to dbName ");
+    
+    }).catch(err => console.error(err));
+  }
 
-    private value: any = {
-        message: 'Hello World!!!',
-        res: "rrr"
-    };
-
-    public hit() {
-        this.value.message = this.value.message + '!';
-        this.value.user = this._user;
-
-        this._user.create();
-        
-        return this.value;
-    }
+  info(): void {
+  }
 }
 
-export default HelloService;
+export default Mongodb;

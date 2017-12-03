@@ -31,6 +31,9 @@
     "typescript": "2.6.2",
     "typescript-eslint-parser": "9.0.1",
     "typescript-ioc": "1.0.2",
+    "mongoose": "4.13.6",
+    "mongodb": "2.2.33",
+    "bluebird": "3.5.1",
     "tsc-watch": "1.0.8"
   }
 }
