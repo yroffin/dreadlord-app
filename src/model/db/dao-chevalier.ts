@@ -15,7 +15,7 @@
  */
 
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
-import * as _ from 'lodash'; 
+import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -26,64 +26,33 @@ import 'rxjs/add/observable/fromPromise';
 import * as mongoose from 'mongoose';
 
 import Mongodb from './mongodb';
+import { AbstractDao } from './dao-abstract';
 
 @Singleton
-export class ChevalierDao {
+export class ChevalierDao extends AbstractDao<ChevalierBean> {
 
   @Inject
   private _mongoose: Mongodb;
 
-  private schema: mongoose.Schema;
-  private entity: mongoose.model;
-
+  /**
+   * constructor
+   */
   constructor() {
-    this._mongoose.info();
-    this.schema = new mongoose.Schema({
+    super({
       name: { type: String, required: true, unique: true },
       created_at: Date,
       updated_at: Date
-    });
+    }, 'Chevalier');
 
-    // the schema is useless so far
-    // we need to create a model using it
-    this.entity = mongoose.model('Chevalier', this.schema);
-  }
+    this.init(this._mongoose);
+  };
 
-  create(chevalier: ChevalierBean) {
-    // create a new user called chris
-    var tuple = new this.entity(chevalier);
-    // call the built-in save method to save to the database
-    tuple.save((err) => {
-      if (err) {
-        console.log('Chevalier was not saved successfully!', err);
-        return;
-      }
-      console.log('Chevalier saved successfully!');
-    });
-  }
-
-  findAll(): Observable<Array<ChevalierBean>> {
-    let beans: Subject<Array<ChevalierBean>> = new Subject<Array<ChevalierBean>>();
-    Observable.fromPromise(this.entity.find().exec()).subscribe((result: Array<any>) => {
-      let tx = new Array<ChevalierBean>();
-      _.each(result, (element) => {
-        tx.push({
-          "name": element.name
-        });
-      });
-      beans.next(tx);
-    });
-    return beans;
-  }
-
-  findOne(name: string): Subject<ChevalierBean> {
-    let bean: Subject<ChevalierBean> = new Subject<ChevalierBean>();
-    Observable.fromPromise(this.entity.findOne({ 'name': name }).exec()).subscribe((result: any) => {
-      bean.next({
-        "name": result.name
-      });
-    });
-    return bean;
+  /**
+   * 
+   * @param name find one element
+   */
+  public findOne(name: string): Subject<ChevalierBean> {
+    return this.findOneRaw({ 'name': name });
   }
 }
 

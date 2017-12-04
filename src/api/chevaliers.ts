@@ -23,7 +23,7 @@ import * as express from 'express';
 import { ExpressWrapper } from "../express/express-wrapper";
 import { ChevalierService } from "../services/chevalier-service";
 
-@Singleton 
+@Singleton
 export class ChevaliersApi {
 
   @Inject
@@ -32,37 +32,46 @@ export class ChevaliersApi {
   @Inject
   private _service: ChevalierService;
 
-  constructor () {
+  constructor() {
   }
 
-  public init () {
+  /**
+   * init
+   */
+  public init() {
     /**
      * post
      */
     this._express.getApp().post('/api/chevaliers', (req, res) => {
-        res.json(this._service.create(req.body.name));
-      }
-    );
+      let subject: Observable<ChevalierBean> = this._service.create({
+        "name": req.body.name
+      });
+      subject.subscribe((result) => {
+        res.json(result);
+      });
+    });
+
     /**
      * get
      */
     this._express.getApp().get('/api/chevaliers', (req, res) => {
-      let chevalier: Observable<Array<ChevalierBean>> = this._service.findAll();
-      chevalier.subscribe((result) => {
+      let subject: Observable<Array<ChevalierBean>> = this._service.findAll();
+      subject.subscribe((result) => {
         res.json(result);
       });
     });
+
     /**
      * get
      */
     this._express.getApp().get('/api/chevaliers/:id', (req, res) => {
-      let chevalier: Observable<ChevalierBean> = this._service.findOne(req.params.id);
-      chevalier.subscribe((result) => {
+      let subject: Observable<ChevalierBean> = this._service.findOne(req.params.id);
+      subject.subscribe((result) => {
         res.json(result);
       });
     }
-  );
-}
+    );
+  }
 
 }
 

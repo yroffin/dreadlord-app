@@ -28,23 +28,17 @@ import { ChevalierDao } from '../model/db/dao-chevalier';
 export class ChevalierService {
 
     @Inject
-    private _chevalier: ChevalierDao;
+    private _dao: ChevalierDao;
 
-    public create(name: string) {
-        let chevalier: ChevalierBean = {
-            name: name
-        };
-
-        this._chevalier.create(chevalier);
-
-        return chevalier;
+    public create(bean: ChevalierBean): Observable<ChevalierBean> {
+        return this._dao.create(bean);
     }
     public findAll(): Observable<Array<ChevalierBean>> {
-        let chevalier: Observable<Array<ChevalierBean>> = this._chevalier.findAll();
+        let chevalier: Observable<Array<ChevalierBean>> = this._dao.findAll();
         return chevalier;
     }
     public findOne(name: string): Observable<ChevalierBean> {
-        let chevalier: Observable<ChevalierBean> = this._chevalier.findOne(name);
+        let chevalier: Observable<ChevalierBean> = this._dao.findOne(name);
         return chevalier;
     }
 }
